@@ -1,10 +1,18 @@
 import React, { useRef } from "react";
-import { Animated, PanResponder, View, StatusBar, StyleSheet, useColorScheme, ViewStyle, Text, Modal } from "react-native";
+import { Animated, PanResponder, View, StyleSheet } from "react-native";
 
 
 function App(){
 
   const steeringPan = useRef(new Animated.ValueXY()).current;
+  const steerVal = useRef(0)
+
+  steeringPan.addListener( coords => {
+    if(Math.trunc(coords.y / 10) !== steerVal.current ){
+      console.log(Math.trunc(coords.y / 10))
+      steerVal.current = Math.trunc(coords.y / 10)
+    }
+  })
 
   const steeringPanResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -25,6 +33,16 @@ function App(){
 
   const throttlePan = useRef(new Animated.ValueXY()).current;
 
+  const throttleVal = useRef(0)
+
+
+  throttlePan.addListener( coords => {
+    if(Math.trunc(coords.x / 10) !== throttleVal.current ){
+      console.log(Math.trunc(coords.x / 10))
+      throttleVal.current = Math.trunc(coords.x / 10)
+    }
+  })
+
   const throttlePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: Animated.event([
@@ -40,6 +58,7 @@ function App(){
       ).start();
     },
   });
+
 
   return (
     <View style={{flex:1}}>
@@ -116,11 +135,11 @@ const styles = StyleSheet.create({
   topPath: {
     backgroundColor: 'cadetblue',
     width: 20,
-    height: '80%'
+    height: 260
   },
   topMilestoneContanier:{
     width:30,
-    height: "80%",
+    height: 260,
     justifyContent: 'space-between'
   },
   topMilestone:{
@@ -130,12 +149,12 @@ const styles = StyleSheet.create({
   },
   bottomPath: {
     backgroundColor: 'cadetblue',
-    width: '80%',
+    width: 260,
     height: 20
   },
   bottomMilestoneContanier:{
     flexDirection: 'row',
-    width: '80%',
+    width: 260,
     height: 30,
     justifyContent: 'space-between'
   },
