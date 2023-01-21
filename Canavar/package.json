@@ -14,7 +14,9 @@
     "react-native": "0.70.6",
     "react-native-ble-plx": "^2.0.3",
     "react-native-device-info": "^10.3.0",
-    "react-native-permissions": "^3.6.1"
+    "react-native-gesture-handler": "^2.9.0",
+    "react-native-permissions": "^3.6.1",
+    "react-native-reanimated": "^2.14.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

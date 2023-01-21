@@ -1,120 +1,113 @@
-import React, { useRef } from "react";
-import { Animated, PanResponder, View, StyleSheet } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-gesture-handler";
+import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 
 function App(){
 
-  const steeringPan = useRef(new Animated.ValueXY()).current;
-  const steerVal = useRef(0)
+  const steeringOffset = useSharedValue({ x: 0, y: 0 })
 
-  steeringPan.addListener( coords => {
-    if(Math.trunc(coords.y / 10) !== steerVal.current ){
-      console.log(Math.trunc(coords.y / 10))
-      steerVal.current = Math.trunc(coords.y / 10)
-    }
-  })
-
-  const steeringPanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event([
-      null,
-      {
-        dy: steeringPan.y,
-      },
-    ],{useNativeDriver: false}),
-    onPanResponderRelease: () => {
-      Animated.spring(
-        steeringPan, // Auto-multiplexed
-        {toValue: {x: 0, y: 0}, useNativeDriver: true}, // Back to zero
-      ).start();
-    },
+  const steeringAnimatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: steeringOffset.value.x },
+        { translateY: steeringOffset.value.y }
+      ],
+    };
   });
 
+  const steeringGesture = Gesture.Pan()
+    .onUpdate((e) => {
+      if(e.translationY < 121 && e.translationY > -121)
+        steeringOffset.value = {
+          x: 0,
+          y: e.translationY
+        };
+    })
+    .onFinalize(() => {
+      steeringOffset.value = {
+        x: 0,
+        y: 0,
+      };
+    });
 
-  const throttlePan = useRef(new Animated.ValueXY()).current;
 
-  const throttleVal = useRef(0)
+    const throttleOffset = useSharedValue({ x: 0, y: 0 })
 
-
-  throttlePan.addListener( coords => {
-    if(Math.trunc(coords.x / 10) !== throttleVal.current ){
-      console.log(Math.trunc(coords.x / 10))
-      throttleVal.current = Math.trunc(coords.x / 10)
-    }
-  })
-
-  const throttlePanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event([
-      null,
-      {
-        dx: throttlePan.x,
-      },
-    ],{useNativeDriver: false}),
-    onPanResponderRelease: () => {
-      Animated.spring(
-        throttlePan, // Auto-multiplexed
-        {toValue: {x: 0, y: 0}, useNativeDriver: true}, // Back to zero
-      ).start();
-    },
-  });
+    const throttleAnimatedStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          { translateX: throttleOffset.value.x },
+          { translateY: throttleOffset.value.y }
+        ],
+      };
+    });
+  
+    const throttleGesture = Gesture.Pan()
+      .onUpdate((e) => {
+        if(e.translationX < 120 && e.translationX > -120)
+          throttleOffset.value = {
+            x: e.translationX,
+            y: 0
+          };
+      })
+      .onFinalize(() => {
+        throttleOffset.value = {
+          x: 0,
+          y: 0,
+        };
+      });
 
 
   return (
-    <View style={{flex:1}}>
-      <View style={styles.topContainer}>
-        <View style={styles.topMilestoneContanier}>
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{flex:1}}>
+        <View style={styles.topContainer}>
+          <View style={styles.topMilestoneContanier}>
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+          </View>
+          <View style={styles.topPath} />
+          <View style={styles.topMilestoneContanier}>
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+            <View style={styles.topMilestone} />
+          </View>
+          <GestureDetector gesture={steeringGesture}>
+            <Animated.View style={[styles.box, steeringAnimatedStyles]} />
+          </GestureDetector>
         </View>
-        <View style={styles.topPath} />
-        <View style={styles.topMilestoneContanier}>
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-          <View style={styles.topMilestone} />
-        </View>
-        <Animated.View
-          style={{
-            position: "absolute",
-            transform: [ {translateY: steeringPan.y}],
-          }}
-          {...steeringPanResponder.panHandlers}>
-          <View style={styles.box} />
-        </Animated.View>
-      </View>
 
-      
-      <View style={{...styles.bottomContainer}}>
-        <View style={styles.bottomMilestoneContanier}>
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
+        
+        <View style={{...styles.bottomContainer}}>
+          <View style={styles.bottomMilestoneContanier}>
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+          </View>
+          <View style={styles.bottomPath} />
+          <View style={styles.bottomMilestoneContanier}>
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+            <View style={styles.bottomMilestone} />
+          </View>
+          
+          <GestureDetector gesture={throttleGesture}>
+            <Animated.View style={[styles.box, throttleAnimatedStyles]} />
+          </GestureDetector>
         </View>
-        <View style={styles.bottomPath} />
-        <View style={styles.bottomMilestoneContanier}>
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-          <View style={styles.bottomMilestone} />
-        </View>
-        <Animated.View
-          style={{
-            position: "absolute",
-            transform: [ {translateX: throttlePan.x}],
-          }}
-          {...throttlePanResponder.panHandlers}>
-          <View style={styles.box} />
-        </Animated.View>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
@@ -168,6 +161,7 @@ const styles = StyleSheet.create({
     width: 50,
     backgroundColor: 'burlywood',
     borderRadius: 25,
+    position: 'absolute'
   },
 });
 
