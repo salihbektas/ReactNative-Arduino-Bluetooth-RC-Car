@@ -19,7 +19,7 @@ function Controller(){
 
   const throttleGesture = Gesture.Pan()
     .onUpdate((e) => {
-      if(e.translationY < 130 && e.translationY > -130)
+      if(e.translationY < 100 && e.translationY > -100)
       throttleOffset.value = {
           x: 0,
           y: e.translationY
@@ -46,7 +46,7 @@ function Controller(){
   
     const steeringGesture = Gesture.Pan()
       .onUpdate((e) => {
-        if(e.translationX < 130 && e.translationX > -130)
+        if(e.translationX < 100 && e.translationX > -100)
           steeringOffset.value = {
             x: e.translationX,
             y: 0
@@ -137,11 +137,11 @@ const styles = StyleSheet.create({
   rightPath: {
     backgroundColor: 'cadetblue',
     width: 20,
-    height: 260
+    height: 200
   },
   rightMilestoneContanier:{
     width:30,
-    height: 260,
+    height: 200,
     justifyContent: 'space-between'
   },
   rightMilestone:{
@@ -151,12 +151,12 @@ const styles = StyleSheet.create({
   },
   leftPath: {
     backgroundColor: 'cadetblue',
-    width: 260,
+    width: 200,
     height: 20
   },
   leftMilestoneContanier:{
     flexDirection: 'row',
-    width: 260,
+    width: 200,
     height: 30,
     justifyContent: 'space-between'
   },
