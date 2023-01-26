@@ -2468,7 +2468,7 @@
   "resolved" "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.2.tgz"
   "version" "1.1.2"
 
-"buffer@^5.5.0":
+"buffer@^5.4.3", "buffer@^5.5.0":
   "integrity" "sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ=="
   "resolved" "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz"
   "version" "5.7.1"
@@ -6140,10 +6140,12 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
-"react-native-ble-plx@^2.0.3":
-  "integrity" "sha512-62LRDBPf/03K7sge+qq2ZuF8PWCGB782G+SBrpgNm5fA5Hs3FCY1ExTJZ1G0tB5ZhBPYEXcKRxPLuFegcDFrqA=="
-  "resolved" "https://registry.npmjs.org/react-native-ble-plx/-/react-native-ble-plx-2.0.3.tgz"
-  "version" "2.0.3"
+"react-native-bluetooth-classic@^1.60.0-rc.25":
+  "integrity" "sha512-zsrdUMPCm3PXveifBwNi6xpDsszUnc0hxb0eSUyxRlk72SsIeFv2uTASDrrug1CYf3wSPdSv//IG9vrRmbY6cg=="
+  "resolved" "https://registry.npmjs.org/react-native-bluetooth-classic/-/react-native-bluetooth-classic-1.60.0-rc.25.tgz"
+  "version" "1.60.0-rc.25"
+  dependencies:
+    "buffer" "^5.4.3"
 
 "react-native-codegen@^0.70.6":
   "integrity" "sha512-kdwIhH2hi+cFnG5Nb8Ji2JwmcCxnaOOo9440ov7XDzSvGfmUStnCzl+MCW8jLjqHcE4icT7N9y+xx4f50vfBTw=="
@@ -6207,7 +6209,7 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@>=0.63.3", "react-native@0.70.6":
+"react-native@*", "react-native@>=0.60.0", "react-native@>=0.63.3", "react-native@0.70.6":
   "integrity" "sha512-xtQdImPHnwgraEx3HIZFOF+D1hJ9bC5mfpIdUGoMHRws6OmvHAjmFpO6qfdnaQ29vwbmZRq7yf14sbury74R/w=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.70.6.tgz"
   "version" "0.70.6"

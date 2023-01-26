@@ -1,86 +1,21 @@
-import React, {type PropsWithChildren} from 'react';
+import React from 'react';
 import {
   Button,
   PermissionsAndroid,
-  Platform,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
-  View,
-  ViewProps,
   ViewStyle,
 } from 'react-native';
-import { BleManager } from 'react-native-ble-plx';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
-
-import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
-import DeviceInfo from 'react-native-device-info';
-
-
-const manager = new BleManager();
-
-type VoidCallback = (result: boolean) => void;
-
-interface BluetoothLowEnergyApi {
-  requestPermissions(cb: VoidCallback): Promise<void>;
-}
-
-function useBLE(): BluetoothLowEnergyApi {
-  
-  const requestPermissions = async (cb: VoidCallback) => {
-    if (Platform.OS === 'android') {
-      const apiLevel = await DeviceInfo.getApiLevel();
-
-      if (apiLevel < 31) {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'Bluetooth Low Energy requires Location',
-            buttonNeutral: 'Ask Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        cb(granted === PermissionsAndroid.RESULTS.GRANTED);
-      } else {
-        const result = await requestMultiple([
-          PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
-          PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        ]);
-
-        const isGranted =
-          result['android.permission.BLUETOOTH_CONNECT'] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-          result['android.permission.BLUETOOTH_SCAN'] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-          result['android.permission.ACCESS_FINE_LOCATION'] ===
-            PermissionsAndroid.RESULTS.GRANTED;
-
-        cb(isGranted);
-      }
-    } else {
-      cb(true);
-    }
-
-
-  };
-  return {requestPermissions,}
-}
 
 const Scan = () => {
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle: ViewStyle = {
@@ -104,23 +39,21 @@ const Scan = () => {
     );
   }
 
-  function scanAndConnect() {
+  async function scanAndConnect() {
 
     sallam()
+    let paired
+    let canavar
+    try {
+      paired = await RNBluetoothClassic.getBondedDevices();
+    } catch (err) {
+        console.log(err)
+    }
 
-    console.log("abi walla çalıştım")
-
-    manager.startDeviceScan(null, null, (error, device) => {
-        if (error) {
-            console.log(error)
-            return
-        }
-
-        console.log(device?.name)
-
-    });
-  //manager.stopDeviceScan()
-
+    if(paired){
+      canavar = paired.find(device => device.name === 'HC-06')
+      console.log(await canavar?.isConnected())
+    }
 }
 
   return (
