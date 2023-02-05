@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Button,
   PermissionsAndroid,
@@ -17,6 +17,8 @@ import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-clas
 const Scan = () => {
 
   const isDarkMode = useColorScheme() === 'dark';
+
+  const device = useRef({} as BluetoothDevice) 
 
   const backgroundStyle: ViewStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -52,7 +54,15 @@ const Scan = () => {
 
     if(paired){
       canavar = paired.find(device => device.name === 'HC-06')
-      console.log(await canavar?.isConnected())
+      if(canavar){
+        device.current = canavar
+        let isConnected = await canavar.connect()
+        if(isConnected){
+          await canavar.write(Buffer.from('B', 'ascii'))
+          await canavar.write(Buffer.from('Raa', 'ascii'))
+          console.log('bitti')
+        }
+      }
     }
 }
 
@@ -64,6 +74,7 @@ const Scan = () => {
       />
       <Text>Salih</Text>
       <Button title='scan' onPress={scanAndConnect} />
+      <Button title='disconnect' onPress={device.current.disconnect} />
     </SafeAreaView>
   );
 };
