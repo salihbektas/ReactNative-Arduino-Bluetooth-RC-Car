@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
   PermissionsAndroid,
@@ -7,10 +7,10 @@ import {
   StyleSheet,
   Text,
   useColorScheme,
-  ViewStyle,
+  View,
+  Pressable
 } from 'react-native';
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
 
@@ -18,14 +18,13 @@ const Scan = () => {
 
   const isDarkMode = useColorScheme() === 'dark';
 
-  const device = useRef({} as BluetoothDevice) 
+  const [deviceList, setDeviceList] = useState(Array<BluetoothDevice>)
 
-  const backgroundStyle: ViewStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    justifyContent: "center",
-    flex: 1,
-    alignItems: "center"
-  };
+  const canavar = useRef({} as BluetoothDevice) 
+
+  useEffect(() => {
+    scan()
+  }, [])
 
 
   async function sallam() {
@@ -41,11 +40,8 @@ const Scan = () => {
     );
   }
 
-  async function scanAndConnect() {
-
-    sallam()
+  async function scan(){
     let paired
-    let canavar
     try {
       paired = await RNBluetoothClassic.getBondedDevices();
     } catch (err) {
@@ -53,49 +49,84 @@ const Scan = () => {
     }
 
     if(paired){
+      setDeviceList(paired)
+      /*
       canavar = paired.find(device => device.name === 'HC-06')
       if(canavar){
+        console.log('ccc', canavar)
         device.current = canavar
+        console.log('aaa', device.current)
         let isConnected = await canavar.connect()
         if(isConnected){
           await canavar.write(Buffer.from('B', 'ascii'))
           await canavar.write(Buffer.from('Raa', 'ascii'))
+          //await canavar.disconnect()
           console.log('bitti')
         }
-      }
+      }*/
     }
-}
+  }
+
+  async function connect(selectedName: string){
+    let canavar1 = deviceList.find(device => device.name === selectedName)
+
+    if(!canavar1){
+      alert('Fail')
+      return
+    }
+
+    canavar.current = canavar1
+    let isConnected = await canavar1.connect()
+    
+    if(!isConnected){
+      alert('Fail')
+      return
+    }
+
+    alert('Success')
+
+  }
+
+  async function disconnect(){
+    canavar.current.name &&  await canavar.current.isConnected() === true && canavar.current.disconnect()
+    canavar.current = {} as BluetoothDevice
+    alert('disconnect')
+  }
+  
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={styles.mainPage}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
       />
-      <Text>Salih</Text>
-      <Button title='scan' onPress={scanAndConnect} />
-      <Button title='disconnect' onPress={device.current.disconnect} />
+
+      <View>
+        {deviceList.map((d, index) => <Pressable key={index} onPress={() => connect(d.name)} style={styles.deviceCard}>
+          <Text style={styles.deviceName}>{d.name}</Text>
+          <Text style={styles.deviceAddress}>{d.address}</Text>
+        </Pressable>)}
+      </View>
+      <Button title='disconnect' onPress={disconnect} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  mainPage:{
+    alignItems: 'center'
   },
-  sectionTitle: {
+  deviceCard: {
+    paddingVertical: 8,
+  },
+  deviceName: {
     fontSize: 24,
     fontWeight: '600',
   },
-  sectionDescription: {
+  deviceAddress: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  }
 });
 
 export default Scan;
