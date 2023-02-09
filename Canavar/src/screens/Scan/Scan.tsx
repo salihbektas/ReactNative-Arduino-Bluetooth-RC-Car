@@ -14,7 +14,7 @@ import {
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
 
-const Scan = () => {
+function Scan({ navigation }) {
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -83,7 +83,7 @@ const Scan = () => {
       return
     }
 
-    alert('Success')
+    navigation.navigate('Controller', {deviceName: canavar1.name})
 
   }
 

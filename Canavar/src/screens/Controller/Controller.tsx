@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
 
-function Controller(){
+function Controller({ route, navigation }){
+
+  useEffect(() =>{
+    (async() => {
+
+      console.log(route.params.deviceName)
+      let canavar = (await RNBluetoothClassic.getBondedDevices()).find(d => d.name === route.params.deviceName)
+
+      if(canavar){
+        console.log(await canavar.isConnected())
+      }
+    })()
+  }, [])
 
   const throttleOffset = useSharedValue({ x: 0, y: 0 })
 
