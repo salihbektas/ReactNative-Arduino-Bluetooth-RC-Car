@@ -7,6 +7,16 @@ import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-clas
 
 function Controller({ route, navigation }){
 
+  const leftMileStones = []
+
+  for(let i = 0; i < 7; ++i)
+    leftMileStones.push(<View style={styles.leftMilestone} />)
+
+  const rightMileStones = []
+
+  for(let i = 0; i < 7; ++i)
+    rightMileStones.push(<View style={styles.rightMilestone} />)
+
   useEffect(() =>{
     (async() => {
 
@@ -80,25 +90,12 @@ function Controller({ route, navigation }){
 
       <View style={{...styles.leftContainer}}>
           <View style={styles.leftMilestoneContanier}>
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
+            {leftMileStones}
           </View>
           <View style={styles.leftPath} />
           <View style={styles.leftMilestoneContanier}>
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
-            <View style={styles.leftMilestone} />
+            {leftMileStones}
           </View>
-          
           <GestureDetector gesture={steeringGesture}>
             <Animated.View style={[styles.box, steeringAnimatedStyles]} />
           </GestureDetector>
@@ -106,23 +103,11 @@ function Controller({ route, navigation }){
 
         <View style={styles.rightContainer}>
           <View style={styles.rightMilestoneContanier}>
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
+            {rightMileStones}
           </View>
           <View style={styles.rightPath} />
           <View style={styles.rightMilestoneContanier}>
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
-            <View style={styles.rightMilestone} />
+            {rightMileStones}
           </View>
           <GestureDetector gesture={throttleGesture}>
             <Animated.View style={[styles.box, throttleAnimatedStyles]} />
