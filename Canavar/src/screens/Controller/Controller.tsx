@@ -1,33 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-gesture-handler";
-import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
 
 function Controller({ route, navigation }){
 
+  const canavar = useRef({} as BluetoothDevice)
+
+  const connected = useRef(false)
+
+  const [message, setMessage] = useState('33')
+
   const leftMileStones = []
 
   for(let i = 0; i < 7; ++i)
-    leftMileStones.push(<View style={styles.leftMilestone} />)
+    leftMileStones.push(<View style={styles.leftMilestone} key={i} />)
 
   const rightMileStones = []
 
   for(let i = 0; i < 7; ++i)
-    rightMileStones.push(<View style={styles.rightMilestone} />)
+    rightMileStones.push(<View style={styles.rightMilestone} key={i} />)
+
 
   useEffect(() =>{
     (async() => {
-
-      console.log(route.params.deviceName)
-      let canavar = (await RNBluetoothClassic.getBondedDevices()).find(d => d.name === route.params.deviceName)
-
-      if(canavar){
-        console.log(await canavar.isConnected())
+      let device = (await RNBluetoothClassic.getBondedDevices()).find(d => d.name === route.params.deviceName)
+      if(device){
+        canavar.current = device
+        connected.current = true
       }
     })()
   }, [])
+
+
 
   const throttleOffset = useSharedValue({ x: 0, y: 0 })
 
@@ -44,9 +51,9 @@ function Controller({ route, navigation }){
     .onUpdate((e) => {
       if(e.translationY < 100 && e.translationY > -100)
       throttleOffset.value = {
-          x: 0,
-          y: e.translationY
-        };
+        x: 0,
+        y: e.translationY
+      };
     })
     .onFinalize(() => {
       throttleOffset.value = {
@@ -56,31 +63,90 @@ function Controller({ route, navigation }){
     });
 
 
-    const steeringOffset = useSharedValue({ x: 0, y: 0 })
+  const steeringOffset = useSharedValue({ x: 0, y: 0 })
 
-    const steeringAnimatedStyles = useAnimatedStyle(() => {
-      return {
-        transform: [
-          { translateX: steeringOffset.value.x },
-          { translateY: steeringOffset.value.y }
-        ],
+  const steeringAnimatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: steeringOffset.value.x },
+        { translateY: steeringOffset.value.y }
+      ],
+    };
+  });
+
+  const steeringGesture = Gesture.Pan()
+    .onUpdate((e) => {
+      if(e.translationX < 100 && e.translationX > -100)
+        steeringOffset.value = {
+          x: e.translationX,
+          y: 0
+        };
+    })
+    .onFinalize(() => {
+      steeringOffset.value = {
+        x: 0,
+        y: 0,
       };
     });
-  
-    const steeringGesture = Gesture.Pan()
-      .onUpdate((e) => {
-        if(e.translationX < 100 && e.translationX > -100)
-          steeringOffset.value = {
-            x: e.translationX,
-            y: 0
-          };
-      })
-      .onFinalize(() => {
-        steeringOffset.value = {
-          x: 0,
-          y: 0,
-        };
-      });
+
+
+  useAnimatedReaction(() => {
+    let mes
+    if(throttleOffset.value.y > 88){
+      mes = '6'
+    }
+    else if(throttleOffset.value.y > 50){
+      mes = '5'
+    }
+    else if(throttleOffset.value.y > 17){
+      mes = '4'
+    }
+    else if(throttleOffset.value.y > -17){
+      mes = '3'
+    }
+    else if(throttleOffset.value.y > -50){
+      mes = '2'
+    }
+    else if(throttleOffset.value.y > -88){
+      mes = '1'
+    }
+    else{
+      mes = '0'
+    }
+
+    if(steeringOffset.value.x > 88){
+      mes = '6' + mes
+    }
+    else if(steeringOffset.value.x > 50){
+      mes = '5' + mes
+    }
+    else if(steeringOffset.value.x > 17){
+      mes = '4' + mes
+    }
+    else if(steeringOffset.value.x > -17){
+      mes = '3' + mes
+    }
+    else if(steeringOffset.value.x > -50){
+      mes = '2' + mes
+    }
+    else if(steeringOffset.value.x > -88){
+      mes = '1' + mes
+    }
+    else{
+      mes = '0' + mes
+    }
+
+    return mes
+  }, (result, previous) => {
+    if (result !== previous) {
+      runOnJS(setMessage)(result)
+    }
+ }, []);
+
+useEffect(() =>{
+  if(connected.current)
+    canavar.current.write(message)
+}, [message])
 
 
   return (
