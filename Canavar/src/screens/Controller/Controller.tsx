@@ -11,7 +11,7 @@ function Controller({ route, navigation }){
 
   const connected = useRef(false)
 
-  const [message, setMessage] = useState('33')
+  const [message, setMessage] = useState(24)
 
   const leftMileStones = []
 
@@ -93,47 +93,44 @@ function Controller({ route, navigation }){
   useAnimatedReaction(() => {
     let mes
     if(throttleOffset.value.y > 88){
-      mes = '6'
+      mes = 0
     }
     else if(throttleOffset.value.y > 50){
-      mes = '5'
+      mes = 1
     }
     else if(throttleOffset.value.y > 17){
-      mes = '4'
+      mes = 2
     }
     else if(throttleOffset.value.y > -17){
-      mes = '3'
+      mes = 3
     }
     else if(throttleOffset.value.y > -50){
-      mes = '2'
+      mes = 4
     }
     else if(throttleOffset.value.y > -88){
-      mes = '1'
+      mes = 5
     }
     else{
-      mes = '0'
+      mes = 6
     }
 
     if(steeringOffset.value.x > 88){
-      mes = '6' + mes
+      mes += 7*6
     }
     else if(steeringOffset.value.x > 50){
-      mes = '5' + mes
+      mes += 7*5
     }
     else if(steeringOffset.value.x > 17){
-      mes = '4' + mes
+      mes += 7*4
     }
     else if(steeringOffset.value.x > -17){
-      mes = '3' + mes
+      mes += 7*3
     }
     else if(steeringOffset.value.x > -50){
-      mes = '2' + mes
+      mes += 7*2
     }
     else if(steeringOffset.value.x > -88){
-      mes = '1' + mes
-    }
-    else{
-      mes = '0' + mes
+      mes += 7
     }
 
     return mes
@@ -145,7 +142,7 @@ function Controller({ route, navigation }){
 
 useEffect(() =>{
   if(connected.current)
-    canavar.current.write(message)
+    canavar.current.write(String.fromCharCode(message +44))
 }, [message])
 
 
