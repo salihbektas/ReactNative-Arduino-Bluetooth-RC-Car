@@ -101,10 +101,11 @@ function Scan({ navigation }) {
       />
 
       <View>
-        {deviceList.map((d, index) => <Pressable key={index} onPress={() => connect(d.name)} style={styles.deviceCard}>
+        {deviceList.length > 0 ? deviceList.map((d, index) => <Pressable key={index} onPress={() => connect(d.name)} style={styles.deviceCard}>
           <Text style={styles.deviceName}>{d.name}</Text>
           <Text style={styles.deviceAddress}>{d.address}</Text>
-        </Pressable>)}
+        </Pressable>) 
+        : <Text style={styles.noDeviceText}>No paired device found.</Text>}
       </View>
       <Button title='disconnect' onPress={disconnect} />
     </SafeAreaView>
@@ -126,6 +127,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
+  },
+  noDeviceText: {
+    fontSize: 26,
+    fontWeight: '800',
   }
 });
 
