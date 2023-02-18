@@ -29,6 +29,9 @@ void loop() {
       data = bt_connection.read();
       throttle = ((data - 44) % 7) -3;
       steering = ((data - 44) / 7) -3;
+
+      Serial.print(throttle);
+      Serial.println(steering);
     }
     else{
       Serial.print((char)bt_connection.read());

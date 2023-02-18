@@ -89,6 +89,10 @@ function Controller({ route, navigation }){
       };
     });
 
+    function wrapper(param){
+      setMessage(param)
+    }
+
 
   useAnimatedReaction(() => {
     let mes
@@ -136,7 +140,7 @@ function Controller({ route, navigation }){
     return mes
   }, (result, previous) => {
     if (result !== previous) {
-      runOnJS(setMessage)(result)
+      runOnJS(wrapper)(result)
     }
  }, []);
 
