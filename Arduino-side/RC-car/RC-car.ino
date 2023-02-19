@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial bt_connection(7,6);
-int throttle, steering, data;
+int throttle, steering, data, junk = 0;
 bool end = false;
 
 int speed[4] = {0, 120, 185, 255};
@@ -34,7 +34,12 @@ void loop() {
       Serial.println(steering);
     }
     else{
-      Serial.print((char)bt_connection.read());
+      ++junk;
+      bt_connection.read();
+      if(junk == 19){
+        junk = 0;
+        end = false;
+      }
     }
   }
 
