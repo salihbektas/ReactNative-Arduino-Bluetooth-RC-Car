@@ -8,13 +8,17 @@ import {
   Text,
   useColorScheme,
   View,
-  Pressable
+  Pressable,
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 
 
 function Scan({ navigation }) {
+
+  const [connecting, setConnecting] = useState(false)
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -75,6 +79,7 @@ function Scan({ navigation }) {
       return
     }
 
+    setConnecting(true)
     canavar.current = canavar1
     let isConnected = await canavar1.connect()
     
@@ -82,7 +87,7 @@ function Scan({ navigation }) {
       alert('Fail')
       return
     }
-
+    setConnecting(false)
     navigation.navigate('Controller', {deviceName: canavar1.name})
 
   }
@@ -107,13 +112,18 @@ function Scan({ navigation }) {
         </Pressable>) 
         : <Text style={styles.noDeviceText}>No paired device found.</Text>}
       </View>
-      <Button title='disconnect' onPress={disconnect} />
+      <View style={styles.indicatorContainer}>
+        {//<Button title='disconnect' onPress={disconnect} />
+        }
+        {connecting && <ActivityIndicator size={Platform.OS === 'android' ? 70 : 'large'} />}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   mainPage:{
+    flex: 1,
     alignItems: 'center'
   },
   deviceCard: {
@@ -131,6 +141,10 @@ const styles = StyleSheet.create({
   noDeviceText: {
     fontSize: 26,
     fontWeight: '800',
+  },
+  indicatorContainer: {
+    flex: 1,
+    justifyContent: 'center'
   }
 });
 

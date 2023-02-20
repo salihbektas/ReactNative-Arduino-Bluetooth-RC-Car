@@ -10,8 +10,8 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Scan' >
+        <Stack.Screen name="Scan" component={Scan} options={{orientation: 'portrait'}}/>
         <Stack.Screen name="Controller" component={Controller} options={{orientation: 'landscape'}} />
-        <Stack.Screen name="Scan" component={Scan} />
       </Stack.Navigator>
     </NavigationContainer>
   );
