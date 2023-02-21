@@ -81,13 +81,21 @@ function Scan({ navigation }) {
 
     setConnecting(true)
     canavar.current = canavar1
-    let isConnected = await canavar1.connect()
+
+    let isConnected: boolean = false
+
+    try{
+      isConnected = await canavar1.connect()
+    } catch(err) {
+      console.log(err)
+    }
     
+    setConnecting(false)
+
     if(!isConnected){
       alert('Fail')
       return
     }
-    setConnecting(false)
     navigation.navigate('Controller', {deviceName: canavar1.name})
 
   }
