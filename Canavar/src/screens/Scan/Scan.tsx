@@ -10,7 +10,8 @@ import {
   View,
   Pressable,
   ActivityIndicator,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
@@ -89,11 +90,11 @@ function Scan({ navigation }) {
     } catch(err) {
       console.log(err)
     }
-    
+
     setConnecting(false)
 
     if(!isConnected){
-      alert('Fail')
+      Alert.alert('Connection Failed')
       return
     }
     navigation.navigate('Controller', {deviceName: canavar1.name})
