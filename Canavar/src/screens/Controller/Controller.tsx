@@ -13,15 +13,15 @@ function Controller({ route, navigation }){
 
   const [message, setMessage] = useState(24)
 
-  const leftMileStones = []
+  const steeringMileStones = []
 
   for(let i = 0; i < 7; ++i)
-    leftMileStones.push(<View style={styles.leftMilestone} key={i} />)
+    steeringMileStones.push(<View style={styles.steeringMilestone} key={i} />)
 
-  const rightMileStones = []
+  const throttleMileStones = []
 
   for(let i = 0; i < 7; ++i)
-    rightMileStones.push(<View style={styles.rightMilestone} key={i} />)
+    throttleMileStones.push(<View style={styles.throttleMilestone} key={i} />)
 
 
   useEffect(() =>{
@@ -155,29 +155,29 @@ useEffect(() =>{
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'blue'}} ></View>
       <View style={{flex: 6, flexDirection: 'row'}}>
 
-      <View style={{...styles.leftContainer}}>
-          <View style={styles.leftMilestoneContanier}>
-            {leftMileStones}
+      <View style={{...styles.steeringContainer}}>
+          <View style={styles.steeringMilestoneContanier}>
+            {steeringMileStones}
           </View>
-          <View style={styles.leftPath} />
-          <View style={styles.leftMilestoneContanier}>
-            {leftMileStones}
+          <View style={styles.steeringPath} />
+          <View style={styles.steeringMilestoneContanier}>
+            {steeringMileStones}
           </View>
           <GestureDetector gesture={steeringGesture}>
-            <Animated.View style={[styles.box, steeringAnimatedStyles]} />
+            <Animated.View style={[styles.controlCircle, steeringAnimatedStyles]} />
           </GestureDetector>
         </View>
 
-        <View style={styles.rightContainer}>
-          <View style={styles.rightMilestoneContanier}>
-            {rightMileStones}
+        <View style={styles.throttleContainer}>
+          <View style={styles.throttleMilestoneContanier}>
+            {throttleMileStones}
           </View>
-          <View style={styles.rightPath} />
-          <View style={styles.rightMilestoneContanier}>
-            {rightMileStones}
+          <View style={styles.throttlePath} />
+          <View style={styles.throttleMilestoneContanier}>
+            {throttleMileStones}
           </View>
           <GestureDetector gesture={throttleGesture}>
-            <Animated.View style={[styles.box, throttleAnimatedStyles]} />
+            <Animated.View style={[styles.controlCircle, throttleAnimatedStyles]} />
           </GestureDetector>
         </View>
 
@@ -188,55 +188,64 @@ useEffect(() =>{
 };
 
 const styles = StyleSheet.create({
-  rightContainer: {
+  throttleContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row'
   },
-  leftContainer: {
+
+  steeringContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  rightPath: {
+
+  throttlePath: {
     backgroundColor: 'cadetblue',
     width: 20,
     height: 200
   },
-  rightMilestoneContanier:{
-    width:30,
+
+  throttleMilestoneContanier:{
+    width: 45,
     height: 200,
     justifyContent: 'space-between'
   },
-  rightMilestone:{
+
+  throttleMilestone:{
     width: '100%',
     height: 5,
     backgroundColor: 'goldenrod'
   },
-  leftPath: {
+
+  steeringPath: {
     backgroundColor: 'cadetblue',
     width: 200,
     height: 20
   },
-  leftMilestoneContanier:{
+
+  steeringMilestoneContanier:{
     flexDirection: 'row',
     width: 200,
-    height: 30,
+    height: 45,
     justifyContent: 'space-between'
   },
-  leftMilestone:{
+
+  steeringMilestone:{
     width: 5,
     height: '100%',
     backgroundColor: 'goldenrod'
   },
-  box: {
-    height: 50,
-    width: 50,
+
+  controlCircle: {
+    height: 80,
+    aspectRatio: 1,
     backgroundColor: 'burlywood',
-    borderRadius: 25,
+    borderRadius: 40,
     position: 'absolute'
-  },
+  }
+
 });
 
 export default Controller;
