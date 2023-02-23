@@ -28,7 +28,7 @@ function Scan({ navigation }) {
   const canavar = useRef({} as BluetoothDevice) 
 
   useEffect(() => {
-    (async () => {
+    (async function checkIsBluetoothAvailable() {
       let available: boolean = false
       try {
         available = await RNBluetoothClassic.isBluetoothAvailable()
@@ -36,10 +36,31 @@ function Scan({ navigation }) {
         console.log(err)
       }
       if(!available){
-        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', [{text: 'exit', onPress: () => {throw new Error('For exit')}}])
+        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', [{text: 'Exit', onPress: () => {throw new Error('For exit')}}])
       }
-    
     })();
+
+    (async function checkIsBluetoothEnabled() {
+      let enabled: boolean = false
+      try {
+        enabled = await RNBluetoothClassic.isBluetoothEnabled()
+      } catch (err) {
+        console.log(err)
+      }
+      if(!enabled){
+        Platform.OS === 'android'
+        ? Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [{text: 'Turn On', 
+          onPress: () => {
+            try{
+              RNBluetoothClassic.requestBluetoothEnabled()
+            } catch (err) {
+              console.log(err)
+            }
+          }}])
+        : Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [{text: 'Exit', onPress: () => {throw new Error('For exit')}}])
+      }
+    })();
+
     scan()
   }, [])
 
