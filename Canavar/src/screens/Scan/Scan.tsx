@@ -11,7 +11,8 @@ import {
   Pressable,
   ActivityIndicator,
   Platform,
-  Alert
+  Alert,
+  BackHandler
 } from 'react-native';
 
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
@@ -36,7 +37,12 @@ function Scan({ navigation }) {
         console.log(err)
       }
       if(!available){
-        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', [{text: 'Exit', onPress: () => {throw new Error('For exit')}}])
+        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', 
+          [{text: 'Exit', 
+          onPress: () => { if(Platform.OS === 'android') BackHandler.exitApp()
+                            else throw new Error('For exit')
+          }}]
+        )
       }
     })();
 
