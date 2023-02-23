@@ -28,6 +28,18 @@ function Scan({ navigation }) {
   const canavar = useRef({} as BluetoothDevice) 
 
   useEffect(() => {
+    (async () => {
+      let available: boolean = false
+      try {
+        available = await RNBluetoothClassic.isBluetoothAvailable()
+      } catch (err) {
+        console.log(err)
+      }
+      if(!available){
+        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', [{text: 'exit', onPress: () => {throw new Error('For exit')}}])
+      }
+    
+    })();
     scan()
   }, [])
 
