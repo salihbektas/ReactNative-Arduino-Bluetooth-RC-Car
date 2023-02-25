@@ -34,6 +34,9 @@ void loop() {
       Serial.println(steering);
     }
     else{
+      throttle = 0;
+      steering = 0;
+
       ++junk;
       bt_connection.read();
       if(junk == 19){
