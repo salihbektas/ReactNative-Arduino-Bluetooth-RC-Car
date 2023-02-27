@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable, Image, BackHandler } from "react-native";
 import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-gesture-handler";
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
+import { useFocusEffect } from "@react-navigation/native";
 
 
 function Controller({ route, navigation }){
@@ -144,15 +145,37 @@ function Controller({ route, navigation }){
     }
  }, []);
 
-useEffect(() =>{
-  if(connected.current)
-    canavar.current.write(String.fromCharCode(message +44))
-}, [message])
+  useEffect(() =>{
+    if(connected.current)
+      canavar.current.write(String.fromCharCode(message +44))
+  }, [message])
 
+  function back(){
+    canavar.current.disconnect()
+    navigation.goBack()
+  }
+
+  useFocusEffect(() => {
+    function backAction(){
+      back()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  });
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'blue'}} ></View>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}} >
+        <Pressable onPress={back} style={styles.backContainer} >
+          <Image source={require("../../../assets/arrow.png")} style={styles.back} />
+        </Pressable>
+      </View>
       <View style={{flex: 6, flexDirection: 'row'}}>
 
       <View style={{...styles.steeringContainer}}>
@@ -188,6 +211,18 @@ useEffect(() =>{
 };
 
 const styles = StyleSheet.create({
+
+  backContainer: {
+    marginRight:"auto",
+    left: 16,
+    top: 8
+  },
+
+  back: {
+    height: 30,
+    width: 30,
+  },
+  
   throttleContainer: {
     flex: 1,
     alignItems: 'center',
