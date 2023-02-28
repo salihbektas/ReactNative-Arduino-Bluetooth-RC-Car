@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Pressable, Image, BackHandler } from "react-native";
+import { View, StyleSheet, Pressable, Image, BackHandler, Text } from "react-native";
 import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-gesture-handler";
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
@@ -175,6 +175,8 @@ function Controller({ route, navigation }){
         <Pressable onPress={back} style={styles.backContainer} >
           <Image source={require("../../../assets/arrow.png")} style={styles.back} />
         </Pressable>
+
+        <Text style={styles.feedBackText}>Connected: {canavar.current.name}</Text>
       </View>
       <View style={{flex: 6, flexDirection: 'row'}}>
 
@@ -213,14 +215,20 @@ function Controller({ route, navigation }){
 const styles = StyleSheet.create({
 
   backContainer: {
-    marginRight:"auto",
+    position: 'absolute',
     left: 16,
-    top: 8
+    top: 16
   },
 
   back: {
     height: 30,
     width: 30,
+  },
+
+  feedBackText:{
+    fontSize: 24,
+    fontWeight: '800',
+    color: 'black'
   },
   
   throttleContainer: {
