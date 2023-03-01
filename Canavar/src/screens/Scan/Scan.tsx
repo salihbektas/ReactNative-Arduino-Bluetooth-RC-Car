@@ -119,6 +119,10 @@ function Scan({ navigation }) {
       return
     }
 
+    if(connecting){
+      return
+    }
+
     setConnecting(true)
     canavar.current = canavar1
 
