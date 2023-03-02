@@ -6,7 +6,7 @@ import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-clas
 import { useFocusEffect } from "@react-navigation/native";
 
 
-function Controller({ route, navigation }){
+function Controller({ route, navigation }) {
 
   const canavar = useRef({} as BluetoothDevice)
 
@@ -16,19 +16,19 @@ function Controller({ route, navigation }){
 
   const steeringMileStones = []
 
-  for(let i = 0; i < 7; ++i)
+  for (let i = 0; i < 7; ++i)
     steeringMileStones.push(<View style={styles.steeringMilestone} key={i} />)
 
   const throttleMileStones = []
 
-  for(let i = 0; i < 7; ++i)
+  for (let i = 0; i < 7; ++i)
     throttleMileStones.push(<View style={styles.throttleMilestone} key={i} />)
 
 
-  useEffect(() =>{
-    (async() => {
+  useEffect(() => {
+    (async () => {
       let device = (await RNBluetoothClassic.getBondedDevices()).find(d => d.name === route.params.deviceName)
-      if(device){
+      if (device) {
         canavar.current = device
         connected.current = true
       }
@@ -50,11 +50,11 @@ function Controller({ route, navigation }){
 
   const throttleGesture = Gesture.Pan()
     .onUpdate((e) => {
-      if(e.translationY < 100 && e.translationY > -100)
-      throttleOffset.value = {
-        x: 0,
-        y: e.translationY
-      };
+      if (e.translationY < 100 && e.translationY > -100)
+        throttleOffset.value = {
+          x: 0,
+          y: e.translationY
+        };
     })
     .onFinalize(() => {
       throttleOffset.value = {
@@ -77,7 +77,7 @@ function Controller({ route, navigation }){
 
   const steeringGesture = Gesture.Pan()
     .onUpdate((e) => {
-      if(e.translationX < 100 && e.translationX > -100)
+      if (e.translationX < 100 && e.translationX > -100)
         steeringOffset.value = {
           x: e.translationX,
           y: 0
@@ -90,51 +90,51 @@ function Controller({ route, navigation }){
       };
     });
 
-    function wrapper(param){
-      setMessage(param)
-    }
+  function wrapper(param) {
+    setMessage(param)
+  }
 
 
   useAnimatedReaction(() => {
     let mes
-    if(throttleOffset.value.y > 88){
+    if (throttleOffset.value.y > 88) {
       mes = 0
     }
-    else if(throttleOffset.value.y > 50){
+    else if (throttleOffset.value.y > 50) {
       mes = 1
     }
-    else if(throttleOffset.value.y > 17){
+    else if (throttleOffset.value.y > 17) {
       mes = 2
     }
-    else if(throttleOffset.value.y > -17){
+    else if (throttleOffset.value.y > -17) {
       mes = 3
     }
-    else if(throttleOffset.value.y > -50){
+    else if (throttleOffset.value.y > -50) {
       mes = 4
     }
-    else if(throttleOffset.value.y > -88){
+    else if (throttleOffset.value.y > -88) {
       mes = 5
     }
-    else{
+    else {
       mes = 6
     }
 
-    if(steeringOffset.value.x > 88){
-      mes += 7*6
+    if (steeringOffset.value.x > 88) {
+      mes += 7 * 6
     }
-    else if(steeringOffset.value.x > 50){
-      mes += 7*5
+    else if (steeringOffset.value.x > 50) {
+      mes += 7 * 5
     }
-    else if(steeringOffset.value.x > 17){
-      mes += 7*4
+    else if (steeringOffset.value.x > 17) {
+      mes += 7 * 4
     }
-    else if(steeringOffset.value.x > -17){
-      mes += 7*3
+    else if (steeringOffset.value.x > -17) {
+      mes += 7 * 3
     }
-    else if(steeringOffset.value.x > -50){
-      mes += 7*2
+    else if (steeringOffset.value.x > -50) {
+      mes += 7 * 2
     }
-    else if(steeringOffset.value.x > -88){
+    else if (steeringOffset.value.x > -88) {
       mes += 7
     }
 
@@ -143,20 +143,20 @@ function Controller({ route, navigation }){
     if (result !== previous) {
       runOnJS(wrapper)(result)
     }
- }, []);
+  }, []);
 
-  useEffect(() =>{
-    if(connected.current)
-      canavar.current.write(String.fromCharCode(message +44))
+  useEffect(() => {
+    if (connected.current)
+      canavar.current.write(String.fromCharCode(message + 44))
   }, [message])
 
-  function back(){
+  function back() {
     canavar.current.disconnect()
     navigation.goBack()
   }
 
   useFocusEffect(() => {
-    function backAction(){
+    function backAction() {
       back()
       return true
     }
@@ -171,16 +171,16 @@ function Controller({ route, navigation }){
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}} >
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }} >
         <Pressable onPress={back} style={styles.backContainer} >
           <Image source={require("../../../assets/arrow.png")} style={styles.back} />
         </Pressable>
 
         <Text style={styles.feedBackText}>Connected: {canavar.current.name}</Text>
       </View>
-      <View style={{flex: 6, flexDirection: 'row'}}>
+      <View style={{ flex: 6, flexDirection: 'row' }}>
 
-      <View style={{...styles.steeringContainer}}>
+        <View style={{ ...styles.steeringContainer }}>
           <View style={styles.steeringMilestoneContanier}>
             {steeringMileStones}
           </View>
@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
     width: 30,
   },
 
-  feedBackText:{
+  feedBackText: {
     fontSize: 24,
     fontWeight: '800',
     color: 'black'
   },
-  
+
   throttleContainer: {
     flex: 1,
     alignItems: 'center',
@@ -250,13 +250,13 @@ const styles = StyleSheet.create({
     height: 200
   },
 
-  throttleMilestoneContanier:{
+  throttleMilestoneContanier: {
     width: 45,
     height: 200,
     justifyContent: 'space-between'
   },
 
-  throttleMilestone:{
+  throttleMilestone: {
     width: '100%',
     height: 5,
     backgroundColor: 'goldenrod'
@@ -268,14 +268,14 @@ const styles = StyleSheet.create({
     height: 20
   },
 
-  steeringMilestoneContanier:{
+  steeringMilestoneContanier: {
     flexDirection: 'row',
     width: 200,
     height: 45,
     justifyContent: 'space-between'
   },
 
-  steeringMilestone:{
+  steeringMilestone: {
     width: 5,
     height: '100%',
     backgroundColor: 'goldenrod'
