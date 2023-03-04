@@ -10,10 +10,12 @@ import {
   ActivityIndicator,
   Platform,
   Alert,
-  BackHandler
+  BackHandler,
+  ListRenderItemInfo
 } from 'react-native';
 
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
+import { FlatList } from 'react-native-gesture-handler';
 
 
 function Scan({ navigation }) {
@@ -118,6 +120,21 @@ function Scan({ navigation }) {
 
   }
 
+  function renderItem({ item }: ListRenderItemInfo<BluetoothDevice>) {
+    return (
+      <Pressable onPress={() => connect(item.name)} style={styles.deviceCard}>
+        <Text style={styles.deviceName}>{item.name}</Text>
+        <Text style={styles.deviceAddress}>{item.address}</Text>
+      </Pressable>
+    )
+  }
+
+  function seperator(){
+    return(
+      <View style={styles.seperator} />
+    )
+  }
+
 
   return (
     <SafeAreaView style={styles.mainPage}>
@@ -126,12 +143,14 @@ function Scan({ navigation }) {
       />
 
       <View>
-        {deviceList.length > 0
-          ? deviceList.map((d, index) => <Pressable key={index} onPress={() => connect(d.name)} style={styles.deviceCard}>
-            <Text style={styles.deviceName}>{d.name}</Text>
-            <Text style={styles.deviceAddress}>{d.address}</Text>
-          </Pressable>)
-          : <Text style={styles.noDeviceText}>No paired device found.</Text>}
+        <FlatList
+          data = {deviceList}
+          renderItem = {renderItem}
+          keyExtractor = {(_, index) => index.toString()}
+          ItemSeparatorComponent = { seperator }
+          ListHeaderComponent = {<Text style={styles.headerText}>Paired Devices</Text>}
+          ListEmptyComponent = {<Text style={styles.noDeviceText}>No paired device found.</Text>}
+        />
       </View>
       <View style={styles.indicatorContainer}>
         {connecting && <ActivityIndicator size={Platform.OS === 'android' ? 70 : 'large'} />}
@@ -143,10 +162,20 @@ function Scan({ navigation }) {
 const styles = StyleSheet.create({
   mainPage: {
     flex: 1,
-    alignItems: 'center'
+    padding: 16
+  },
+  headerText: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: 'black'
+  },
+  seperator: {
+    width: '100%',
+    height: 2,
+    backgroundColor: 'black'
   },
   deviceCard: {
-    paddingVertical: 8,
+    paddingVertical: 8
   },
   deviceName: {
     fontSize: 24,
@@ -159,11 +188,16 @@ const styles = StyleSheet.create({
   },
   noDeviceText: {
     fontSize: 26,
-    fontWeight: '800',
+    fontWeight: '800'
   },
   indicatorContainer: {
-    flex: 1,
-    justifyContent: 'center'
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
