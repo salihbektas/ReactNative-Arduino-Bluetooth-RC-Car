@@ -16,6 +16,7 @@ import {
 
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 import { FlatList } from 'react-native-gesture-handler';
+import colors from '../../colors';
 
 
 function Scan({ navigation }) {
@@ -162,17 +163,18 @@ function Scan({ navigation }) {
 const styles = StyleSheet.create({
   mainPage: {
     flex: 1,
-    padding: 16
+    padding: 16,
+    backgroundColor: colors.white
   },
   headerText: {
     fontSize: 26,
     fontWeight: '800',
-    color: 'black'
+    color: colors.water
   },
   seperator: {
     width: '100%',
     height: 2,
-    backgroundColor: 'black'
+    backgroundColor: colors.dark
   },
   deviceCard: {
     paddingVertical: 8
@@ -180,15 +182,18 @@ const styles = StyleSheet.create({
   deviceName: {
     fontSize: 24,
     fontWeight: '600',
+    color: colors.dark
   },
   deviceAddress: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
+    color: colors.water
   },
   noDeviceText: {
     fontSize: 26,
-    fontWeight: '800'
+    fontWeight: '800',
+    color: colors.dark
   },
   indicatorContainer: {
     position: 'absolute',

@@ -4,6 +4,7 @@ import { GestureDetector, GestureHandlerRootView, Gesture } from "react-native-g
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 import { useFocusEffect } from "@react-navigation/native";
+import colors  from "../../colors";
 
 
 function Controller({ route, navigation }) {
@@ -170,15 +171,15 @@ function Controller({ route, navigation }) {
   });
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }} >
+    <GestureHandlerRootView style={ styles.main }>
+      <View style={ styles.topSide } >
         <Pressable onPress={back} style={styles.backContainer} >
           <Image source={require("../../../assets/arrow.png")} style={styles.back} />
         </Pressable>
 
         <Text style={styles.feedBackText}>Connected: {canavar.current.name}</Text>
       </View>
-      <View style={{ flex: 6, flexDirection: 'row' }}>
+      <View style={ styles.controllerSide }>
 
         <View style={{ ...styles.steeringContainer }}>
           <View style={styles.steeringMilestoneContanier}>
@@ -214,6 +215,18 @@ function Controller({ route, navigation }) {
 
 const styles = StyleSheet.create({
 
+  main: {
+    flex: 1,
+    backgroundColor: colors.white
+  },
+
+  topSide: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+
   backContainer: {
     position: 'absolute',
     left: 16,
@@ -228,7 +241,12 @@ const styles = StyleSheet.create({
   feedBackText: {
     fontSize: 24,
     fontWeight: '800',
-    color: 'black'
+    color: colors.dark
+  },
+
+  controllerSide: {
+    flex: 6,
+    flexDirection: 'row'
   },
 
   throttleContainer: {
@@ -245,7 +263,7 @@ const styles = StyleSheet.create({
   },
 
   throttlePath: {
-    backgroundColor: 'cadetblue',
+    backgroundColor: colors.water,
     width: 20,
     height: 200
   },
@@ -259,11 +277,11 @@ const styles = StyleSheet.create({
   throttleMilestone: {
     width: '100%',
     height: 5,
-    backgroundColor: 'goldenrod'
+    backgroundColor: colors.sun
   },
 
   steeringPath: {
-    backgroundColor: 'cadetblue',
+    backgroundColor: colors.water,
     width: 200,
     height: 20
   },
@@ -278,13 +296,13 @@ const styles = StyleSheet.create({
   steeringMilestone: {
     width: 5,
     height: '100%',
-    backgroundColor: 'goldenrod'
+    backgroundColor: colors.sun
   },
 
   controlCircle: {
     height: 80,
     aspectRatio: 1,
-    backgroundColor: 'burlywood',
+    backgroundColor: colors.sun,
     borderRadius: 40,
     position: 'absolute'
   }
