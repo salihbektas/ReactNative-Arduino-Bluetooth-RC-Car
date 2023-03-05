@@ -17,9 +17,10 @@ import {
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 import { FlatList } from 'react-native-gesture-handler';
 import colors from '../../colors';
+import { ScanProps } from '../../types';
 
 
-function Scan({ navigation }) {
+function Scan({ navigation }: ScanProps) {
 
   const [connecting, setConnecting] = useState(false)
 

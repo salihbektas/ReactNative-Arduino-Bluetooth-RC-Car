@@ -5,9 +5,10 @@ import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValu
 import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
 import { useFocusEffect } from "@react-navigation/native";
 import colors  from "../../colors";
+import { ControllerProps } from "../../types";
 
 
-function Controller({ route, navigation }) {
+function Controller({ route, navigation }: ControllerProps) {
 
   const canavar = useRef({} as BluetoothDevice)
 
@@ -91,7 +92,7 @@ function Controller({ route, navigation }) {
       };
     });
 
-  function wrapper(param) {
+  function wrapper(param: number) {
     setMessage(param)
   }
 
