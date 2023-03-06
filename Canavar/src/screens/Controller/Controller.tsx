@@ -178,7 +178,7 @@ function Controller({ route, navigation }: ControllerProps) {
           <Image source={require("../../../assets/arrow.png")} style={styles.back} />
         </Pressable>
 
-        <Text style={styles.feedBackText}>Connected: {canavar.current.name}</Text>
+        <Text style={styles.feedBackText}>Connected: {route.params.deviceName}</Text>
       </View>
       <View style={ styles.controllerSide }>
 
