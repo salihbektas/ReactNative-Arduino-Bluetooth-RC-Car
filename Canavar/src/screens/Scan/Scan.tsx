@@ -31,6 +31,9 @@ function Scan({ navigation }: ScanProps) {
   const canavar = useRef({} as BluetoothDevice)
 
   useEffect(() => {
+
+    RNBluetoothClassic.onBluetoothEnabled(scan);
+
     (async function checkIsBluetoothAvailable() {
       let available: boolean = false
       try {
