@@ -30,6 +30,11 @@ For more detailed information:
 [react native environment setup](https://reactnative.dev/docs/environment-setup)
 
 
+## Circuit Diagram
+
+![Circuit Diagram](/Canavar/assets/diagram.png)
+
+
 ## Screenshots
 
 Screenshots will be added soon
