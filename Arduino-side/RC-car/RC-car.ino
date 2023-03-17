@@ -4,7 +4,7 @@ SoftwareSerial bt_connection(7,6);
 int throttle, steering, data, junk = 0;
 bool end = false;
 
-int speed[4] = {0, 120, 185, 255};
+int speed[4] = {0, 85, 170, 255};
 
 
 void setup() {
