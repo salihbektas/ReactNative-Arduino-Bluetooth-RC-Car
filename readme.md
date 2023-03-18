@@ -50,8 +50,8 @@ For more detailed information:
 
 
 ## Screenshots
+![Screenshots](/Canavar/assets/screenshots.png)
 
-Screenshots will be added soon
 
 ## Video
 
