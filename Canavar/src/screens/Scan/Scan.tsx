@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react'
 import {
   SafeAreaView,
   StatusBar,
@@ -12,29 +12,25 @@ import {
   Alert,
   BackHandler,
   ListRenderItemInfo
-} from 'react-native';
+} from 'react-native'
 
-import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
-import { FlatList } from 'react-native-gesture-handler';
-import colors from '../../colors';
-import { ScanProps } from '../../types';
+import RNBluetoothClassic, {BluetoothDevice} from 'react-native-bluetooth-classic'
+import {FlatList} from 'react-native-gesture-handler'
+import colors from '../../colors'
+import {ScanProps} from '../../types'
 
-
-function Scan({ navigation }: ScanProps) {
-
+function Scan({navigation}: ScanProps) {
   const [connecting, setConnecting] = useState(false)
 
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
   const [deviceList, setDeviceList] = useState(Array<BluetoothDevice>)
 
   const canavar = useRef({} as BluetoothDevice)
 
   useEffect(() => {
-
-    RNBluetoothClassic.onBluetoothEnabled(scan);
-
-    (async function checkIsBluetoothAvailable() {
+    RNBluetoothClassic.onBluetoothEnabled(scan)
+    ;(async function checkIsBluetoothAvailable() {
       let available: boolean = false
       try {
         available = await RNBluetoothClassic.isBluetoothAvailable()
@@ -42,19 +38,18 @@ function Scan({ navigation }: ScanProps) {
         console.log(err)
       }
       if (!available) {
-        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!',
-          [{
+        Alert.alert('Bluetooth Required', 'This device does not has bluetooth capability!', [
+          {
             text: 'Exit',
             onPress: () => {
               if (Platform.OS === 'android') BackHandler.exitApp()
               else throw new Error('For exit')
             }
-          }]
-        )
+          }
+        ])
       }
-    })();
-
-    (async function checkIsBluetoothEnabled() {
+    })()
+    ;(async function checkIsBluetoothEnabled() {
       let enabled: boolean = false
       try {
         enabled = await RNBluetoothClassic.isBluetoothEnabled()
@@ -63,19 +58,28 @@ function Scan({ navigation }: ScanProps) {
       }
       if (!enabled) {
         Platform.OS === 'android'
-          ? Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [{
-            text: 'Turn On',
-            onPress: () => {
-              try {
-                RNBluetoothClassic.requestBluetoothEnabled()
-              } catch (err) {
-                console.log(err)
+          ? Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [
+              {
+                text: 'Turn On',
+                onPress: () => {
+                  try {
+                    RNBluetoothClassic.requestBluetoothEnabled()
+                  } catch (err) {
+                    console.log(err)
+                  }
+                }
               }
-            }
-          }])
-          : Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [{ text: 'Exit', onPress: () => { throw new Error('For exit') } }])
+            ])
+          : Alert.alert('Bluetooth is off', 'Bluetooth must be turned on!', [
+              {
+                text: 'Exit',
+                onPress: () => {
+                  throw new Error('For exit')
+                }
+              }
+            ])
       }
-    })();
+    })()
 
     scan()
   }, [])
@@ -83,7 +87,7 @@ function Scan({ navigation }: ScanProps) {
   async function scan() {
     let paired
     try {
-      paired = await RNBluetoothClassic.getBondedDevices();
+      paired = await RNBluetoothClassic.getBondedDevices()
     } catch (err) {
       console.log(err)
     }
@@ -121,11 +125,10 @@ function Scan({ navigation }: ScanProps) {
       Alert.alert('Connection Failed')
       return
     }
-    navigation.navigate('Controller', { deviceName: canavar1.name })
-
+    navigation.navigate('Controller', {deviceName: canavar1.name})
   }
 
-  function renderItem({ item }: ListRenderItemInfo<BluetoothDevice>) {
+  function renderItem({item}: ListRenderItemInfo<BluetoothDevice>) {
     return (
       <Pressable onPress={() => connect(item.name)} style={styles.deviceCard}>
         <Text style={styles.deviceName}>{item.name}</Text>
@@ -134,35 +137,30 @@ function Scan({ navigation }: ScanProps) {
     )
   }
 
-  function seperator(){
-    return(
-      <View style={styles.seperator} />
-    )
+  function seperator() {
+    return <View style={styles.seperator} />
   }
-
 
   return (
     <SafeAreaView style={styles.mainPage}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-      />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       <View>
         <FlatList
-          data = {deviceList}
-          renderItem = {renderItem}
-          keyExtractor = {(_, index) => index.toString()}
-          ItemSeparatorComponent = { seperator }
-          ListHeaderComponent = {<Text style={styles.headerText}>Paired Devices</Text>}
-          ListEmptyComponent = {<Text style={styles.noDeviceText}>No paired device found.</Text>}
+          data={deviceList}
+          renderItem={renderItem}
+          keyExtractor={(_, index) => index.toString()}
+          ItemSeparatorComponent={seperator}
+          ListHeaderComponent={<Text style={styles.headerText}>Paired Devices</Text>}
+          ListEmptyComponent={<Text style={styles.noDeviceText}>No paired device found.</Text>}
         />
       </View>
       <View style={styles.indicatorContainer}>
         {connecting && <ActivityIndicator size={Platform.OS === 'android' ? 70 : 'large'} />}
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   mainPage: {
@@ -208,6 +206,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   }
-});
+})
 
-export default Scan;
+export default Scan
