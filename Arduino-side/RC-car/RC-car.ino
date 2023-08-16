@@ -22,24 +22,26 @@ void setup() {
 
 void loop() {
   if(bt_connection.available()){
-    if(bt_connection.peek() == 43){
+    data = bt_connection.peek();
+    Serial.println(data);
+    if(data == 43){
       end = true;
-      Serial.println("end");
     }
-    if(!end){
+    if(data < 43 || data > 92){
+      data = bt_connection.read();
+      throttle = 0;
+      steering = 0;
+    }
+    else if(!end){
       data = bt_connection.read();
       throttle = ((data - 44) % 7) -3;
       steering = ((data - 44) / 7) -3;
-
-      Serial.print(throttle);
-      Serial.println(steering);
     }
     else{
+      bt_connection.read();
       throttle = 0;
       steering = 0;
-
       ++junk;
-      bt_connection.read();
       if(junk == 19){
         junk = 0;
         end = false;
