@@ -115,6 +115,7 @@ function Scan({navigation}: ScanProps) {
 
     try {
       isConnected = await canavar1.connect()
+      RNBluetoothClassic.onDeviceDisconnected(onDisconnect)
     } catch (err) {
       console.log(err)
     }
@@ -126,6 +127,17 @@ function Scan({navigation}: ScanProps) {
       return
     }
     navigation.navigate('Controller', {deviceName: canavar1.name})
+  }
+
+  function onDisconnect() {
+    Alert.alert('Connection Lost', 'will return to the scanning screen!', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          navigation.navigate('Scan')
+        }
+      }
+    ])
   }
 
   function renderItem({item}: ListRenderItemInfo<BluetoothDevice>) {
