@@ -8,7 +8,7 @@ Canavar (monster in Turkish) is a remote control toy car project that works over
 
 ## Required parts list
 
-[ARDUINO UNO](https://www.amazon.com/ARDUINO-UNO-Generic-USB-Cable/dp/B0BKFBT1R1/ref=sr_1_4?keywords=arduino+uno&qid=1678994006&sprefix=ardu%2Caps%2C204&sr=8-4)
+[ARDUINO UNO](https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/ref=sr_1_3?keywords=arduino&qid=1695223998&sr=8-3&th=1)
 
 [HC-06 Bluetooth Module ](https://www.amazon.com/DSD-TECH-HC-06-Bluetooth-Raspberry/dp/B074J5WMH1/ref=sr_1_1_sspa?crid=23OWG9K28IDER&keywords=hc+06&qid=1678993542&sprefix=hc+0%2Caps%2C199&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExT1lJNjFVN0lQQ0U3JmVuY3J5cHRlZElkPUEwOTcwODk2MldLVjNJOTBLOEFKNiZlbmNyeXB0ZWRBZElkPUEwNzA1OTA0MUVPV0JTMEhFTVk1QSZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=)
 
