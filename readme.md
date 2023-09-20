@@ -35,7 +35,7 @@ Required to have Node.js pre-installed on your system
 run:
 
 ```
->npm ci
+>npm i
 >npx react-native run-android
 ```
 
@@ -43,16 +43,14 @@ For more detailed information:
 
 [react native environment setup](https://reactnative.dev/docs/environment-setup)
 
-
 ## Circuit Diagram
 
 ![Circuit Diagram](/Canavar/assets/diagram.png)
 
-
 ## Screenshots
+
 ![Screenshots](/Canavar/assets/screenshots.png)
 
+## Photograph
 
-## Video
-
-Video will be added soon
+![Canavar](/Canavar/assets/canavar.jpg)
